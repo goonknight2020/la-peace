@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Peace — Peak Internet Culture</title>
+
+  <style>
+    :root {
+      --black: #020407;
+      --blue-dark: #0D1B2A;
+      --blue: #1B2A4A;
+      --blue-light: #36598f;
+      --cyan: #91c4ff;
+      --white: #f3f7ff;
+      --muted: #9baac0;
+      --gold: #e7bd70;
+      --glass: rgba(18, 34, 58, 0.58);
+      --border: rgba(145, 195, 255, 0.2);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      overflow-x: hidden;
+      color: var(--white);
+      background: var(--black);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* Animated 3D background */
+
+    .world {
+      position: fixed;
+      z-index: -5;
+      inset: 0;
+      overflow: hidden;
+      perspective: 900px;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(54, 89, 143, 0.25), transparent 30%),
+        linear-gradient(180deg, #050a12, #020407 75%);
+    }
+
+    .world::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(145, 195, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(145, 195, 255, 0.06) 1px, transparent 1px);
+      background-size: 55px 55px;
+      transform: perspective(400px) rotateX(62deg) scale(2.3) translateY(130px);
+      transform-origin: center bottom;
+      opacity: 0.45;
+    }
+
+    .cube {
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      border: 1px solid rgba(145, 195, 255, 0.25);
+      background: linear-gradient(135deg, rgba(54, 89, 143, 0.2), rgba(13, 27, 42, 0.05));
+      box-shadow:
+        0 0 35px rgba(54, 89, 143, 0.2),
+        inset 0 0 30px rgba(145, 195, 255, 0.05);
+      transform: rotateX(55deg) rotateZ(45deg);
+      animation: float 12s ease-in-out infinite;
+    }
+
+    .cube:nth-child(1) {
+      top: 18%;
+      left: 7%;
+      animation-delay: -3s;
+      transform: scale(1.6) rotateX(55deg) rotateZ(45deg);
+    }
+
+    .cube:nth-child(2) {
+      top: 45%;
+      right: 8%;
+      width: 160px;
+      height: 160px;
+      animation-delay: -7s;
+    }
+
+    .cube:nth-child(3) {
+      bottom: 5%;
+      left: 38%;
+      width: 75px;
+      height: 75px;
+      animation-delay: -10s;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotateX(55deg) rotateZ(45deg);
+      }
+
+      50% {
+        transform: translateY(-35px) rotateX(65deg) rotateZ(65deg);
+      }
+    }
+
+    /* Navigation */
+
+    .navbar {
+      position: fixed;
+      z-index: 10;
+      top: 0;
+      width: 100%;
+      padding: 18px 6%;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(2, 4, 7, 0.72);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1180px;
+      margin: auto;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .logo-icon {
+      display: grid;
+      width: 32px;
+      height: 32px;
+      place-items: center;
+      border-radius: 9px;
+      color: var(--cyan);
+      background: var(--blue);
+      box-shadow: 0 0 25px rgba(145, 195, 255, 0.25);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 26px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--cyan);
+    }
+
+    /* General layout */
+
+    .container {
+      width: min(1120px, 90%);
+      margin: auto;
+    }
+
+    section {
+      padding: 110px 0;
+    }
+
+    .eyebrow {
+      margin-bottom: 18px;
+      color: var(--cyan);
+      font-size: 0.75rem;
+      font-weight: bold;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      max-width: 700px;
+      margin-bottom: 42px;
+    }
+
+    h2 {
+      margin-bottom: 14px;
+      font-size: clamp(2.3rem, 5vw, 4.2rem);
+      line-height: 1;
+      letter-spacing: -0.06em;
+    }
+
+    .section-title p {
+      color: var(--muted);
+    }
+
+    .glass {
+      border: 1px solid var(--border);
+      background: var(--glass);
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.48);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    .button {
+      display: inline-block;
+      padding: 13px 20px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-weight: bold;
+      transition: 0.25s ease;
+    }
+
+    .button:hover {
+      transform: translateY(-3px);
+      border-color: var(--cyan);
+    }
+
+    .primary {
+      background: linear-gradient(135deg, #36598f, #1B2A4A);
+    }
+
+    .secondary {
+      color: var(--cyan);
+      background: rgba(13, 27, 42, 0.6);
+    }
+
+    /* Hero */
+
+    .hero {
+      position: relative;
+      display: grid;
+      min-height: 100vh;
+      place-items: center;
+      padding: 150px 0 100px;
+      text-align: center;
+      isolation: isolate;
+    }
+
+    .hero-image {
+      position: absolute;
+      z-index: -2;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.34;
+      filter: brightness(0.65) saturate(0.75);
+      mix-blend-mode: screen;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(2, 4, 7, 0.95), rgba(13, 27, 42, 0.35), rgba(2, 4, 7, 0.9)),
+        linear-gradient(0deg, var(--black), transparent 55%);
+    }
+
+    .hero-content {
+      max-width: 900px;
+    }
+
+    .hero h1 {
+      margin-bottom: 25px;
+      font-size: clamp(5rem, 17vw, 11rem);
+      line-height: 0.8;
+      letter-spacing: -0.12em;
+      background: linear-gradient(135deg, white, var(--cyan), #4d70a8);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero p {
+      max-width: 650px;
+      margin: auto;
+      color: #c0ccda;
+      font-size: 1.15rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 13px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+
+    /* Feature cards */
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      overflow: hidden;
+      border-radius: 20px;
+      transition: 0.25s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(145, 195, 255, 0.55);
+    }
+
+    .feature-card img {
+      height: 220px;
+      object-fit: cover;
+      filter: brightness(0.78) saturate(0.8);
+      transition: 0.4s ease;
+    }
+
+    .feature-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .feature-info {
+      padding: 25px;
+    }
+
+    .feature-info span {
+      color: var(--gold);
+      font-size: 0.75rem;
+      font-weight: bold;
+      letter-spacing: 0.14em;
+    }
+
+    .feature-info h3 {
+      margin: 12px 0 8px;
+      font-size: 1.35rem;
+    }
+
+    .feature-info p {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    /* Wisdom section */
+
+    .wisdom {
+      background: linear-gradient(180deg, transparent, rgba(13, 27, 42, 0.52), transparent);
+    }
+
+    .wisdom-layout {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 24px;
+    }
+
+    .wisdom-image {
+      overflow: hidden;
+      min-height: 430px;
+      border-radius: 20px;
+    }
+
+    .wisdom-image img {
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.73) saturate(0.75);
+    }
+
+    .wisdom-panel {
+      display: flex;
+      min-height: 430px;
+      flex-direction: column;
+      justify-content: center;
+      padding: clamp(30px, 5vw, 60px);
+      border-radius: 20px;
+    }
+
+    .quote-mark {
+      color: var(--gold);
+      font-family: Georgia, serif;
+      font-size: 6rem;
+      line-height: 0.45;
+    }
+
+    #quote {
+      margin: 28px 0 18px;
+      font-size: clamp(1.6rem, 3vw, 2.7rem);
+      font-weight: bold;
+      line-height: 1.18;
+      letter-spacing: -0.04em;
+    }
+
+    #source {
+      margin-bottom: 28px;
+      color: var(--gold);
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* Footer */
+
+    footer {
+      padding: 25px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: #708198;
+      font-size: 0.82rem;
+      text-align: center;
+      background: #010204;
+    }
+
+    @media (max-width: 800px) {
+      .nav-links {
+        display: none;
+      }
+
+      .feature-grid,
+      .wisdom-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .wisdom-image {
+        min-height: 320px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      section {
+        padding: 80px 0;
+      }
+
+      .container {
+        width: 92%;
+      }
+
+      .hero h1 {
+        font-size: 22vw;
+      }
+
+      .hero-buttons,
+      .hero-buttons .button {
+        width: 100%;
+      }
+
+      .cube:nth-child(1) {
+        left: -45px;
+      }
+
+      .cube:nth-child(2) {
+        right: -70px;
+      }
+    }
+  </style>
+</head>
+
+<body id="top">
+
+  <!-- CSS 3D background -->
+  <div class="world" aria-hidden="true">
+    <div class="cube"></div>
+    <div class="cube"></div>
+    <div class="cube"></div>
+  </div>
+
+  <nav class="navbar">
+    <div class="nav-content">
+      <a class="logo" href="#top">
+        <span class="logo-icon">✦</span>
+        La Peace
+      </a>
+
+      <div class="nav-links">
+        <a href="#features">Why It Is Peak</a>
+        <a href="#wisdom">Hall of Wisdom</a>
+        <a href="#legacy">Legacy</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <!-- Your first supplied image -->
+      <img
+        class="hero-image"
+        src="la-peace-1.jpg"
+        alt="La Peace in a Minecraft-inspired environment"
+      />
+
+      <div class="hero-overlay"></div>
+
+      <div class="container hero-content">
+        <div class="eyebrow">Peak internet culture</div>
+
+        <h1>La<br />Peace</h1>
+
+        <p>
+          The ultimate symbol of calm energy, legendary aura, and internet
+          greatness—honoring the wisdom and presence of Kai Cenat.
+        </p>
+
+        <div class="hero-buttons">
+          <a class="button primary" href="#features">
+            Explore the legend ↓
+          </a>
+
+          <a
+            class="button secondary"
+            href="https://vt.tiktok.com/ZSq1Q9yfx/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Watch the TikTok ↗
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="section-title">
+          <div class="eyebrow">01 / The phenomenon</div>
+          <h2>Why La Peace is top-tier.</h2>
+          <p>
+            La Peace is more than a meme. It is a complete atmosphere:
+            peaceful, powerful, mysterious, and impossible to forget.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+          <article class="feature-card glass">
+            <img src="la-peace-1.jpg" alt="La Peace standing in a stone Minecraft-style room" />
+
+            <div class="feature-info">
+              <span>01 / AURA</span>
+              <h3>Unmatched presence</h3>
+              <p>
+                La Peace enters the frame and instantly becomes the most
+                important thing happening.
+              </p>
+            </div>
+          </article>
+
+          <article class="feature-card glass">
+            <!-- Your second supplied image -->
+            <img src="la-peace-2.jpg" alt="La Peace portrait in a bright fantasy landscape" />
+
+            <div class="feature-info">
+              <span>02 / ENERGY</span>
+              <h3>Peaceful but powerful</h3>
+              <p>
+                The image is calm, dramatic, funny, and inspirational all at
+                the same time.
+              </p>
+            </div>
+          </article>
+
+          <article class="feature-card glass">
+            <img src="la-peace-1.jpg" alt="Stylized La Peace character portrait" />
+
+            <div class="feature-info">
+              <span>03 / CULTURE</span>
+              <h3>Instantly recognizable</h3>
+              <p>
+                One expression and one peaceful aura communicate an entire
+                internet philosophy.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="wisdom" id="wisdom">
+      <div class="container">
+        <div class="section-title">
+          <div class="eyebrow">02 / The philosophy</div>
+          <h2>Hall of Wisdom</h2>
+          <p>
+            Cycle through lessons inspired by Kai Cenat's confidence, humor,
+            determination, and iconic energy.
+          </p>
+        </div>
+
+        <div class="wisdom-layout">
+          <div class="wisdom-image glass">
+            <img src="la-peace-2.jpg" alt="Close-up La Peace portrait" />
+          </div>
+
+          <div class="wisdom-panel glass">
+            <div class="quote-mark">“</div>
+
+            <p id="quote">
+              Stay true to yourself. Your energy becomes powerful when you
+              stop trying to be someone else.
+            </p>
+
+            <div id="source">La Peace philosophy · 01</div>
+
+            <button class="button primary" id="quoteButton">
+              Reveal another lesson ✦
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="legacy">
+      <div class="container" style="text-align: center;">
+        <div class="eyebrow">03 / The legacy</div>
+
+        <h2>
+          Be loud when it matters.
+          <br />
+          Be peaceful when it counts.
+        </h2>
+
+        <p style="max-width: 580px; margin: 18px auto 28px; color: var(--muted);">
+          La Peace represents the balance between confidence and calm:
+          knowing when to bring the energy and when to simply exist in greatness.
+        </p>
+
+        <a class="button secondary" href="#top">Return to the top ↑</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    La Peace Archive · Built for calm energy and peak internet culture.
+  </footer>
+
+  <script>
+    const wisdom = [
+      {
+        quote:
+          "Stay true to yourself. Your energy becomes powerful when you stop trying to be someone else.",
+        source: "La Peace philosophy · 01"
+      },
+      {
+        quote:
+          "When the world becomes loud, protect your focus and keep moving forward.",
+        source: "La Peace philosophy · 02"
+      },
+      {
+        quote:
+          "Confidence is showing up as yourself, even when nobody else understands the vision yet.",
+        source: "La Peace philosophy · 03"
+      },
+      {
+        quote:
+          "Your energy is valuable. Give it to the people and dreams that deserve it.",
+        source: "La Peace philosophy · 04"
+      },
+      {
+        quote:
+          "Pressure can become power when you refuse to let it decide who you are.",
+        source: "La Peace philosophy · 05"
+      }
+    ];
+
+    let quoteIndex = 0;
+
+    const quote = document.getElementById("quote");
+    const source = document.getElementById("source");
+    const button = document.getElementById("quoteButton");
+
+    button.addEventListener("click", () => {
+      quote.style.opacity = "0";
+
+      setTimeout(() => {
+        quoteIndex = (quoteIndex + 1) % wisdom.length;
+
+        quote.textContent = wisdom[quoteIndex].quote;
+        source.textContent = wisdom[quoteIndex].source;
+        quote.style.opacity = "1";
+      }, 180);
+    });
+  </script>
+</body>
+</html>
