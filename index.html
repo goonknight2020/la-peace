@@ -110,7 +110,7 @@
       top: 0; left: 0;
       width: 100%;
       z-index: 1000;
-      padding: 25px 60px;
+      padding: 20px 50px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -121,11 +121,12 @@
     }
     .logo-container {
       display: flex;
-      align-items: baseline;
-      gap: 12px;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
     }
     .logo {
-      font-size: 26px;
+      font-size: 28px;
       font-weight: 900;
       letter-spacing: 3px;
       color: #d4af37;
@@ -133,21 +134,33 @@
       transition: all .3s;
     }
     .logo-authors {
-      font-size: 11px;
-      letter-spacing: 1.5px;
-      color: #00d4ff;
+      font-size: 14px;
+      letter-spacing: 1px;
+      color: #e0e0e0;
       font-weight: 600;
-      text-transform: uppercase;
       font-family: 'Space Mono', monospace;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid rgba(0, 212, 255, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    .logo-authors a {
+    .logo-authors .faris-link {
       color: #00d4ff;
-      text-decoration: none;
-      transition: color .3s, text-shadow .3s;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      font-weight: 700;
+      transition: all .3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
     }
-    .logo-authors a:hover {
+    .logo-authors .faris-link:hover {
       color: #ffd700;
-      text-shadow: 0 0 8px rgba(255,215,0,0.8);
+      text-shadow: 0 0 10px rgba(255,215,0,0.8);
+      transform: translateY(-1px);
     }
 
     nav { display: flex; gap: 60px; }
@@ -492,7 +505,9 @@
   <header>
     <div class="logo-container">
       <div class="logo">LA PEACE</div>
-      <div class="logo-authors">by Tayyam &amp; <a href="https://faristech.makerlab.workers.dev/" target="_blank">Faris</a></div>
+      <div class="logo-authors">
+        by Tayyam &amp; <a href="https://faristech.makerlab.workers.dev/" target="_blank" class="faris-link">Faris ↗</a>
+      </div>
     </div>
     <nav>
       <a href="#home">Home</a>
@@ -519,12 +534,14 @@
   <section class="media-section" id="media">
     <h2 class="section-title">Media Gallery</h2>
     <div class="media-grid">
+      <!-- First Media Item -->
       <div class="media-item" id="kaiCenatMedia">
         <img src="https://i.ytimg.com/vi/MQaDDAjr-G8/maxresdefault.jpg" alt="Wise Kai Cenat">
         <div class="media-overlay"><div class="play-icon">▶</div></div>
       </div>
-      <div class="media-item">
-        <img src="https://images.unsplash.com/photo-1508739773434-c26b3d09e071?auto=format&fit=crop&w=1200&q=80" alt="Futuristic glowing golden gradient art">
+      <!-- Second Media Item -->
+      <div class="media-item" id="secondMedia">
+        <img src="https://i.ytimg.com/vi/O4bKj7f_B3Q/maxresdefault.jpg" alt="La Peace Video 2">
         <div class="media-overlay"><div class="play-icon">▶</div></div>
       </div>
     </div>
@@ -582,14 +599,22 @@
       cursor.style.top = e.clientY + 'px';
     });
 
-    // Wise Kai Cenat Video Modal Handling
+    // Video Modal Handling
     const kaiCenatMedia = document.getElementById('kaiCenatMedia');
+    const secondMedia = document.getElementById('secondMedia');
     const videoModal = document.getElementById('videoModal');
     const youtubeIframe = document.getElementById('youtubeIframe');
     const closeModal = document.getElementById('closeModal');
 
+    // First video listener
     kaiCenatMedia.addEventListener('click', () => {
       youtubeIframe.src = "https://www.youtube.com/embed/MQaDDAjr-G8?autoplay=1";
+      videoModal.classList.add('active');
+    });
+
+    // Second video listener
+    secondMedia.addEventListener('click', () => {
+      youtubeIframe.src = "https://www.youtube.com/embed/O4bKj7f_B3Q?autoplay=1";
       videoModal.classList.add('active');
     });
 
